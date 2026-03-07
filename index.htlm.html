@@ -171,6 +171,9 @@
                         <button class="btn btn-primary" style="width:100%" onclick="salvarConfig(event)">Salvar Dados</button>
                         <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;">
                         <h4 style="margin-bottom:15px; color: var(--accent);">Portabilidade / Backup</h4>
+                        
+                        <button class="btn btn-secondary" style="width:100%; margin-bottom:10px; font-size: 13px; border-color: var(--primary);" onclick="configurarAutoSave()" id="btn-autosave">🔄 Ativar Auto-Save Local</button>
+
                         <button class="btn btn-secondary" style="width:100%; margin-bottom:10px; font-size: 13px;" onclick="exportarBackup()">💾 Exportar Banco de Dados</button>
                         <label class="btn btn-secondary" style="width:100%; display:block; text-align:center; font-size: 13px; margin-bottom: 20px;">📂 Importar Banco de Dados<input type="file" id="file-import" accept=".json" onchange="importarBackup(event)"></label>
                         <button class="btn btn-danger" style="width:100%;" onclick="confirmarSair()">Sair e Salvar Sessão</button>
@@ -228,6 +231,7 @@
         let gisInited = false;
         let logadoComGoogle = false;
         let fileIdDrive = null;
+        let autoSaveDirHandle = null; // Váriavel para armazenar a pasta do Auto-Save
 
         function gapiLoaded() {
             gapi.load('client', async () => {
@@ -260,9 +264,13 @@
 
         let clienteAtualId = null;
 
-        // FUNÇÃO CENTRAL DE SALVAMENTO (LOCAL E NUVEM)
+        // FUNÇÃO CENTRAL DE SALVAMENTO (LOCAL, NUVEM E NOVO AUTO-SAVE)
         function atualizarBancoDados() {
             localStorage.setItem('66GarageDB', JSON.stringify(db));
+            
+            // Dispara o Auto-Save silencioso local se ativado
+            executarAutoSaveLocal();
+
             if (logadoComGoogle && fileIdDrive) {
                 const url = 'https://www.googleapis.com/upload/drive/v3/files/' + fileIdDrive + '?uploadType=media';
                 fetch(url, {
@@ -275,6 +283,47 @@
                 }).catch(err => console.error('Erro ao salvar na nuvem:', err));
             }
         }
+
+        // --- INÍCIO DO SISTEMA DE AUTO-SAVE LOCAL ---
+        async function configurarAutoSave() {
+            try {
+                // Abre o prompt nativo do navegador para escolher uma pasta
+                autoSaveDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+                
+                // Atualiza o botão visualmente
+                let btn = document.getElementById('btn-autosave');
+                btn.innerHTML = '✅ Auto-Save Ativo nesta Sessão';
+                btn.style.background = 'var(--success)';
+                btn.style.color = '#020617';
+                btn.style.borderColor = 'var(--success)';
+                
+                mostrarToast("Pasta de Auto-Save conectada com sucesso!", "var(--success)");
+            } catch (err) {
+                console.error(err);
+                mostrarToast("Auto-save cancelado ou sem permissão.", "var(--danger)");
+            }
+        }
+
+        async function executarAutoSaveLocal() {
+            // Se o usuário não ativou a pasta ainda, ignora silenciosamente
+            if (!autoSaveDirHandle) return;
+            
+            try {
+                // Gera a data atual para nomear o arquivo sem caracteres inválidos (ex: 2026-03-07_20-30-15)
+                let agora = new Date();
+                let dataStr = `${agora.getFullYear()}-${String(agora.getMonth()+1).padStart(2,'0')}-${String(agora.getDate()).padStart(2,'0')}_${String(agora.getHours()).padStart(2,'0')}-${String(agora.getMinutes()).padStart(2,'0')}-${String(agora.getSeconds()).padStart(2,'0')}`;
+                let fileName = `AutoSave_66Garage_${dataStr}.json`;
+                
+                // Cria o arquivo dentro da pasta escolhida
+                const fileHandle = await autoSaveDirHandle.getFileHandle(fileName, { create: true });
+                const writable = await fileHandle.createWritable();
+                await writable.write(JSON.stringify(db, null, 2));
+                await writable.close();
+            } catch (err) {
+                console.error("Falha no Auto-Save em Background", err);
+            }
+        }
+        // --- FIM DO SISTEMA DE AUTO-SAVE LOCAL ---
 
         // SISTEMA DE POP-UP (TOASTS)
         function mostrarToast(mensagem, cor = 'var(--primary)') {
@@ -331,7 +380,6 @@
             document.getElementById('customModal').classList.add('show');
 
             try {
-                // Modificado aqui: Usando 'select_account' para forçar a escolha da conta do Google
                 tokenClient.requestAccessToken({prompt: 'select_account'}); 
             } catch (err) {
                 console.error("Falha ao iniciar requisição:", err);
@@ -450,11 +498,9 @@
             let u = document.getElementById('login-user').value; let p = document.getElementById('login-pass').value; 
             if (u === db.config.user && p === db.config.pass) { 
                 
-                // Exibe o popup menor de carregamento
                 let overlay = document.getElementById('startup-overlay');
                 overlay.classList.remove('hidden', 'fade-out');
 
-                // Simula o tempo de carregamento e depois entra no sistema
                 setTimeout(() => {
                     overlay.classList.add('fade-out');
                     setTimeout(() => {
@@ -462,7 +508,7 @@
                         document.getElementById('login-screen').classList.add('hidden'); 
                         document.getElementById('app-screen').classList.remove('hidden'); 
                         navegar('inicio'); 
-                    }, 500); // Aguarda a animação de desaparecer
+                    }, 500); 
                 }, 1500);
 
             } else { 
