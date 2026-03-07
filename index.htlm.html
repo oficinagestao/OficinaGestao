@@ -338,7 +338,7 @@
             tokenClient.callback = async (resp) => {
                 if (resp.error !== undefined) {
                     fecharModal();
-                    return alert('Erro no login do Google. Certifique-se que você está rodando isso em um servidor web registrado.');
+                    return alert('Erro no login do Google. Detalhes: ' + resp.error);
                 }
                 logadoComGoogle = true;
                 document.getElementById('nuvem-status').innerText = "Nuvem (Google Drive)";
@@ -353,11 +353,8 @@
                 navegar('inicio');
             };
 
-            if (gapi.client.getToken() === null) {
-                tokenClient.requestAccessToken({prompt: 'consent'});
-            } else {
-                tokenClient.requestAccessToken({prompt: ''});
-            }
+            // MODIFICAÇÃO: Força o Google a exibir a tela de seleção de conta sempre
+            tokenClient.requestAccessToken({prompt: 'select_account'});
         }
 
         async function gerenciarArquivoDrive() {
