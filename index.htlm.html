@@ -93,17 +93,21 @@
         .toast { background: var(--card-bg); color: var(--text-main); border-left: 5px solid var(--primary); padding: 18px 25px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.6); font-size: 15px; font-weight: 600; opacity: 0; transform: translateX(100%); transition: all 0.4s ease; border-top: 1px solid var(--border-color); border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
         .toast.show { opacity: 1; transform: translateX(0); }
 
-        /* TELA DE CARREGAMENTO INICIAL SUAVE */
-        #startup-overlay { position: fixed; inset: 0; background: var(--bg-color); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s; }
+        /* NOVA TELA DE CARREGAMENTO - POPUP MENOR */
+        #startup-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s; }
         #startup-overlay.fade-out { opacity: 0; visibility: hidden; }
+        .startup-box { background: var(--topbar-bg); padding: 30px 40px; border-radius: 16px; text-align: center; border: 1px solid var(--primary); box-shadow: 0 0 30px rgba(14, 165, 233, 0.2); transform: scale(1); transition: transform 0.5s ease; }
+        #startup-overlay.fade-out .startup-box { transform: scale(0.9); }
     </style>
 </head>
 <body>
 
-    <div id="startup-overlay">
-        <div class="loader" style="margin-bottom: 25px;"></div>
-        <h2 style="color: var(--primary); text-shadow: var(--primary-glow); font-size: 22px; margin-bottom: 10px;">Carregando última sessão...</h2>
-        <p style="color: var(--text-muted); font-size: 14px;">Preparando o ambiente do sistema</p>
+    <div id="startup-overlay" class="hidden fade-out">
+        <div class="startup-box">
+            <div class="loader" style="margin-bottom: 20px;"></div>
+            <h3 style="color: var(--primary); margin-bottom: 8px;">Carregando sessão...</h3>
+            <p style="color: var(--text-muted); font-size: 13px;">Preparando o ambiente local</p>
+        </div>
     </div>
 
     <div class="toast-container" id="toastContainer"></div>
@@ -235,7 +239,6 @@
             });
         }
 
-        // CÓDIGO GSI REESCRITO: Callback definido na inicialização para evitar quebra de política
         function gisLoaded() {
             tokenClient = google.accounts.oauth2.initTokenClient({
                 client_id: GOOGLE_CLIENT_ID,
@@ -328,8 +331,8 @@
             document.getElementById('customModal').classList.add('show');
 
             try {
-                // Força tela de consentimento para evitar bloqueios silenciosos
-                tokenClient.requestAccessToken({prompt: 'consent'}); 
+                // Modificado aqui: Usando 'select_account' para forçar a escolha da conta do Google
+                tokenClient.requestAccessToken({prompt: 'select_account'}); 
             } catch (err) {
                 console.error("Falha ao iniciar requisição:", err);
                 fecharModal();
@@ -341,7 +344,7 @@
             if (resp.error !== undefined) {
                 fecharModal();
                 console.error('Erro detalhado:', resp);
-                return alert('Acesso bloqueado pelo Google. \nVerifique o console para detalhes.\nErro reportado: ' + resp.error);
+                return alert('Acesso bloqueado pelo Google. \nVerifique se o seu domínio está autorizado no Google Cloud Console.\nErro reportado: ' + resp.error);
             }
             
             logadoComGoogle = true;
@@ -446,9 +449,22 @@
         function fazerLogin() { 
             let u = document.getElementById('login-user').value; let p = document.getElementById('login-pass').value; 
             if (u === db.config.user && p === db.config.pass) { 
-                document.getElementById('login-screen').classList.add('hidden'); 
-                document.getElementById('app-screen').classList.remove('hidden'); 
-                navegar('inicio'); 
+                
+                // Exibe o popup menor de carregamento
+                let overlay = document.getElementById('startup-overlay');
+                overlay.classList.remove('hidden', 'fade-out');
+
+                // Simula o tempo de carregamento e depois entra no sistema
+                setTimeout(() => {
+                    overlay.classList.add('fade-out');
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                        document.getElementById('login-screen').classList.add('hidden'); 
+                        document.getElementById('app-screen').classList.remove('hidden'); 
+                        navegar('inicio'); 
+                    }, 500); // Aguarda a animação de desaparecer
+                }, 1500);
+
             } else { 
                 alert("Usuário ou senha incorretos."); 
             } 
@@ -534,14 +550,6 @@
         function renderizarRelatorios() { let relFin = document.getElementById('relatorio-financeiro'); let relMet = document.getElementById('relatorio-metricas'); if(!relFin || !relMet) return; let entradasOS = 0, entradasDiversas = 0, saidas = 0; db.financas.forEach(f => { if(f.tipo === 'entrada') { if(f.desc.includes('Serviço (O.S):')) entradasOS += f.valor; else entradasDiversas += f.valor; } if(f.tipo === 'saida') saidas += f.valor; }); relFin.innerHTML = `<div><p>Receita Bruta: <strong style="color: var(--success);">${(entradasOS + entradasDiversas).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p><p>Total Despesas: <strong style="color: var(--danger);">${saidas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p><hr><p>Saldo Líquido: <strong style="color: var(--primary);">${(entradasOS + entradasDiversas - saidas).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p></div>`; }
         function renderizarMarketing() { let lista = document.getElementById('lista-marketing'); if(!lista) return; lista.innerHTML = ''; db.clientes.forEach(c => { let num = c.tel.replace(/\D/g, ''); let msg = encodeURIComponent(`Olá ${c.nome}, aqui é da ${db.config.empresa}...`); lista.innerHTML += `<div class="card-item" style="border-left-color: #25D366;"><strong>${c.nome}</strong><a href="https://wa.me/55${num}?text=${msg}" target="_blank" class="btn btn-success" style="background: #25D366; margin-top: 10px;">📱 Chamar</a></div>`; }); }
         window.onclick = function(event) { if (!event.target.closest('.brand')) { document.getElementById('config-menu').classList.remove('show'); } }
-
-        // GATILHO PARA REMOVER A TELA DE CARREGAMENTO INICIAL
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                let overlay = document.getElementById('startup-overlay');
-                if (overlay) overlay.classList.add('fade-out');
-            }, 1500); // Exibe por 1.5s antes de começar a esmaecer
-        });
     </script>
 </body>
 </html>
