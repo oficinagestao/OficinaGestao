@@ -13,7 +13,9 @@
             --bg-color: #020617; --topbar-bg: #0f172a; --card-bg: #1e293b;
             --primary: #0ea5e9; --primary-glow: 0 0 12px rgba(14, 165, 233, 0.4);
             --accent: #f97316; --success: #10b981; --danger: #ef4444;
-            --text-main: #f8fafc; --text-muted: #94a3b8; --border-color: #334155;
+            --text-main: #cbd5e1; /* Ajustado para cinza claro */
+            --text-muted: #94a3b8; /* Cinza médio */
+            --border-color: #334155;
             --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
         }
 
@@ -21,12 +23,12 @@
         body { background-color: var(--bg-color); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
         .hidden { display: none !important; }
-        .btn { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; color: white; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        .btn { padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; color: #cbd5e1; display: flex; align-items: center; justify-content: center; gap: 8px;}
         
         .btn-primary { background: var(--primary); box-shadow: var(--primary-glow); color: #020617; font-weight: 800; }
         .btn-primary:hover { box-shadow: 0 0 20px rgba(14, 165, 233, 0.7); transform: translateY(-2px); }
         .btn-success { background: var(--success); color: #020617; font-weight: 800;}
-        .btn-danger { background: var(--danger); box-shadow: 0 0 12px rgba(239, 68, 68, 0.4); }
+        .btn-danger { background: var(--danger); box-shadow: 0 0 12px rgba(239, 68, 68, 0.4); color: #020617; }
         .btn-secondary { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-color); }
         .btn-secondary:hover { background: #334155; }
         .btn:hover { filter: brightness(1.2); }
@@ -39,7 +41,6 @@
 
         #login-screen { position: fixed; inset: 0; z-index: 2000; background: radial-gradient(circle at center, #0f172a, #020617); display: flex; justify-content: center; align-items: center; }
         .login-box { background: var(--topbar-bg); padding: 40px; border-radius: 16px; width: 380px; text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.8); border: 1px solid var(--border-color); }
-        .logo-img { width: 80px; height: 80px; border-radius: 12px; background: var(--primary); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; color: #020617; font-size: 28px; font-weight: 900; box-shadow: var(--primary-glow); overflow: hidden; }
         
         .divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: var(--text-muted); font-size: 12px; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border-color); }
@@ -96,8 +97,12 @@
         /* NOVA TELA DE CARREGAMENTO - POPUP MENOR */
         #startup-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s; }
         #startup-overlay.fade-out { opacity: 0; visibility: hidden; }
-        .startup-box { background: var(--topbar-bg); padding: 30px 40px; border-radius: 16px; text-align: center; border: 1px solid var(--primary); box-shadow: 0 0 30px rgba(14, 165, 233, 0.2); transform: scale(1); transition: transform 0.5s ease; }
+        .startup-box { background: var(--topbar-bg); padding: 30px 40px; border-radius: 166px; text-align: center; border: 1px solid var(--primary); box-shadow: 0 0 30px rgba(14, 165, 233, 0.2); transform: scale(1); transition: transform 0.5s ease; }
         #startup-overlay.fade-out .startup-box { transform: scale(0.9); }
+
+        /* Estilo da caneta de edição */
+        .btn-edit-inline { background: none; border: none; color: var(--primary); cursor: pointer; padding: 0 5px; display: inline-flex; align-items: center; transition: 0.2s; vertical-align: middle; }
+        .btn-edit-inline:hover { transform: scale(1.2); filter: brightness(1.2); }
     </style>
 </head>
 <body>
@@ -118,8 +123,8 @@
 
     <div id="login-screen">
         <div class="login-box">
-            <div class="logo-img" id="login-logo-text">66</div>
-            <h2 id="login-company-name" style="margin-bottom: 25px; color: var(--primary); text-shadow: var(--primary-glow);">66Garage</h2>
+            <h3 style="margin-bottom: 30px; color: var(--primary); text-shadow: var(--primary-glow); line-height: 1.4;">Bem vindo ao sistema de gestão de oficinas.</h3>
+            
             <input type="text" id="login-user" placeholder="Usuário" onkeypress="if(event.key === 'Enter') fazerLogin()">
             <div style="position: relative; width: 100%; margin: 8px 0 16px;">
                 <input type="password" id="login-pass" placeholder="Senha" style="margin: 0; padding-right: 45px;" onkeypress="if(event.key === 'Enter') fazerLogin()">
@@ -188,7 +193,7 @@
                 <div id="saudacao-usuario" style="margin-bottom: 25px;"></div>
                 
                 <div class="card" style="border-left: 4px solid var(--primary);">
-                    <h3 style="color: var(--text-main); margin-bottom: 10px;">Serviços Recentes (Últimos 3 dias)</h3>
+                    <h3 style="color: var(--text-muted); margin-bottom: 10px;">Serviços Recentes (Últimos 3 dias)</h3>
                     <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">Fique de olho nos serviços mais recentes para agilizar cobranças, entregas ou retornos de garantia.</p>
                     <div id="lista-inicio-servicos" class="grid-cards"></div>
                 </div>
@@ -196,17 +201,52 @@
 
             <div id="view-cadastro" class="view-section hidden"><div class="card" style="max-width: 600px; margin: auto;"><h2 style="margin-bottom: 25px; color: var(--primary);">Novo Cliente</h2><input type="text" id="cad-nome" placeholder="Nome Completo"><div class="grid-2"><input type="text" id="cad-tel" placeholder="Telefone" oninput="this.value = mascaraTelefone(this.value)"><input type="email" id="cad-email" placeholder="E-mail"></div><div class="grid-2"><input type="text" id="cad-modelo" placeholder="Modelo do Veículo"><input type="text" id="cad-placa" placeholder="Placa (ABC-1234)" oninput="this.value = mascaraPlaca(this.value)"></div><div class="grid-2"><input type="text" id="cad-chassi" placeholder="Chassi (17 caracteres)" oninput="this.value = mascaraChassi(this.value)"><input type="text" id="cad-km" placeholder="Quilometragem (Km)"></div><button class="btn btn-success" style="width: 100%; margin-top: 10px;" onclick="salvarCliente()">Salvar Cadastro</button></div></div>
             <div id="view-clientes" class="view-section hidden"><h2 style="margin-bottom: 25px; color: var(--primary);">Lista de Clientes</h2><div id="lista-clientes" class="grid-cards"></div></div>
-            <div id="view-ficha-cliente" class="view-section hidden"><button class="btn btn-secondary" style="margin-bottom:20px;" onclick="navegar('clientes')">← Voltar</button><div class="card" id="ficha-dados-cliente"></div><div class="card"><h3 style="color:var(--primary); margin-bottom:20px;">Nova Ficha de Serviço</h3><input type="text" id="srv-nome" placeholder="Serviço a ser realizado"><input type="text" id="srv-diag" placeholder="Diagnóstico Técnico"><div class="grid-2"><div><label style="font-size:13px; color:var(--text-muted);">Tempo Mão de Obra (Horas)</label><input type="number" id="srv-tempo" placeholder="Ex: 2" oninput="calcularServico()"></div><div><label style="font-size:13px; color:var(--text-muted);">Valor Mão de Obra (R$ 120/h)</label><input type="text" id="srv-val-mao" readonly style="color:var(--accent); font-weight:bold;"></div></div><div class="grid-2"><div><label style="font-size:13px; color:var(--text-muted);">Valor Peças (R$)</label><input type="number" id="srv-pecas" placeholder="Ex: 150.00" oninput="calcularServico()"></div><div><label style="font-size:13px; color:var(--text-muted);">Valor Total a Receber (R$)</label><input type="text" id="srv-total" readonly style="color:var(--primary); font-weight:bold; font-size:18px; text-shadow: var(--primary-glow);"></div></div><button class="btn btn-success" style="margin-top: 10px;" onclick="salvarServico()">Registrar Serviço (Lança no Caixa)</button></div><div class="card service-history" id="historico-servicos"></div></div>
+            <div id="view-ficha-cliente" class="view-section hidden">
+                <button class="btn btn-secondary" style="margin-bottom:20px;" onclick="navegar('clientes')">← Voltar</button>
+                <div class="card" id="ficha-dados-cliente"></div>
+                <div class="card">
+                    <h3 style="color:var(--primary); margin-bottom:20px;">Nova Ficha de Serviço</h3>
+                    <input type="text" id="srv-nome" placeholder="Serviço a ser realizado">
+                    <input type="text" id="srv-diag" placeholder="Diagnóstico Técnico">
+                    <div class="grid-2">
+                        <div>
+                            <label style="font-size:13px; color:var(--text-muted);">Tempo Mão de Obra (Horas)</label>
+                            <input type="number" id="srv-tempo" placeholder="Ex: 2" oninput="calcularServico()">
+                        </div>
+                        <div>
+                            <label style="font-size:13px; color:var(--text-muted);">
+                                Valor Mão de Obra (R$ <span id="val-hora-display">120</span>/h)
+                                <button class="btn-edit-inline" onclick="alterarValorHora()" title="Editar valor da hora">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </button>
+                            </label>
+                            <input type="text" id="srv-val-mao" readonly style="color:var(--accent); font-weight:bold;">
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div>
+                            <label style="font-size:13px; color:var(--text-muted);">Valor Peças (R$)</label>
+                            <input type="number" id="srv-pecas" placeholder="Ex: 150.00" oninput="calcularServico()">
+                        </div>
+                        <div>
+                            <label style="font-size:13px; color:var(--text-muted);">Valor Total a Receber (R$)</label>
+                            <input type="text" id="srv-total" readonly style="color:var(--primary); font-weight:bold; font-size:18px; text-shadow: var(--primary-glow);">
+                        </div>
+                    </div>
+                    <button class="btn btn-success" style="margin-top: 10px;" onclick="salvarServico()">Registrar Serviço (Lança no Caixa)</button>
+                </div>
+                <div class="card service-history" id="historico-servicos"></div>
+            </div>
             <div id="view-fornecedores" class="view-section hidden"><div class="card"><h3 style="margin-bottom: 20px; color: var(--primary);">Cadastrar Fornecedor</h3><div class="row-form"><input type="text" id="for-nome" placeholder="Nome"><input type="text" id="for-cnpj" placeholder="C.N.P.J"><input type="text" id="for-tel" placeholder="Telefone" oninput="this.value = mascaraTelefone(this.value)"><input type="text" id="for-item" placeholder="Item"><button class="btn btn-success" onclick="salvarFornecedor()">Salvar Fornecedor</button></div></div><h2 style="margin: 30px 0 20px; color: var(--primary);">Meus Fornecedores</h2><div id="lista-fornecedores" class="grid-cards"></div></div>
             <div id="view-gestao" class="view-section hidden">
                 <h2 style="margin-bottom: 25px; color: var(--primary);">Balanço de Hoje</h2>
-                <div class="dashboard-grid"><div class="dash-card"><h3>Entradas (Hoje)</h3><p id="dash-dia-ent">R$ 0,00</p></div><div class="dash-card" style="border-bottom-color: var(--danger);"><h3>Saídas (Hoje)</h3><p id="dash-dia-sai" style="color: var(--danger); text-shadow: 0 0 10px rgba(239,68,68,0.4);">R$ 0,00</p></div><div class="dash-card"><h3>Saldo do Dia</h3><p id="dash-dia-saldo">R$ 0,00</p></div></div>
+                <div class="dashboard-grid"><div class="dash-card"><h3 style="color: var(--text-muted);">Entradas (Hoje)</h3><p id="dash-dia-ent">R$ 0,00</p></div><div class="dash-card" style="border-bottom-color: var(--danger);"><h3 style="color: var(--text-muted);">Saídas (Hoje)</h3><p id="dash-dia-sai" style="color: var(--danger); text-shadow: 0 0 10px rgba(239,68,68,0.4);">R$ 0,00</p></div><div class="dash-card"><h3 style="color: var(--text-muted);">Saldo do Dia</h3><p id="dash-dia-saldo">R$ 0,00</p></div></div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;"><h2 style="color: var(--primary);">Balanço de Períodos</h2><button class="btn btn-danger" onclick="confirmarZerarSaldos()">Zerar Histórico Financeiro</button></div>
                 <div class="dashboard-grid">
-                    <div class="dash-card"><h3>Saldo (Semana)</h3><p id="dash-semana">---</p></div>
-                    <div class="dash-card"><h3>Saldo (Mês)</h3><p id="dash-mes">---</p></div>
-                    <div class="dash-card"><h3>Saldo (Ano)</h3><p id="dash-ano">---</p></div>
+                    <div class="dash-card"><h3 style="color: var(--text-muted);">Saldo (Semana)</h3><p id="dash-semana">---</p></div>
+                    <div class="dash-card"><h3 style="color: var(--text-muted);">Saldo (Mês)</h3><p id="dash-mes">---</p></div>
+                    <div class="dash-card"><h3 style="color: var(--text-muted);">Saldo (Ano)</h3><p id="dash-ano">---</p></div>
                 </div>
                 
                 <div class="card"><h3 style="margin-bottom: 20px; color: var(--primary);">Lançar Movimentação Avulsa</h3><div class="row-form"><select id="fin-tipo"><option value="entrada">Entrada Manual (+)</option><option value="saida">Saída Manual (-)</option></select><input type="text" id="fin-desc" placeholder="Descrição (Ex: Pagamento Água, Venda Avulsa)"><input type="number" id="fin-valor" placeholder="Valor (R$)"><button class="btn btn-primary" onclick="salvarMovimentacao()">Registrar Caixa</button></div></div>
@@ -231,7 +271,7 @@
         let gisInited = false;
         let logadoComGoogle = false;
         let fileIdDrive = null;
-        let autoSaveDirHandle = null; // Váriavel para armazenar a pasta do Auto-Save
+        let autoSaveDirHandle = null; 
 
         function gapiLoaded() {
             gapi.load('client', async () => {
@@ -252,10 +292,9 @@
             gisInited = true;
         }
 
-        // Definindo a senha e usuários padrão requisitados
-        let db = JSON.parse(localStorage.getItem('66GarageDB')) || { config: { empresa: '66Garage', user: 'admin', pass: '0000', logo: '' }, clientes: [], fornecedores: [], financas: [], diasUso: [], estoque: [], historicoAlertas: {semana: '', mes: '', ano: ''} };
+        let db = JSON.parse(localStorage.getItem('66GarageDB')) || { config: { empresa: '66Garage', user: 'admin', pass: '0000', logo: '', valorHora: 120 }, clientes: [], fornecedores: [], financas: [], diasUso: [], estoque: [], historicoAlertas: {semana: '', mes: '', ano: ''} };
+        if(!db.config.valorHora) db.config.valorHora = 120;
         
-        // Se o usuário tinha as senhas antigas no navegador, atualiza automaticamente
         if(db.config && db.config.user === 'Admin' && db.config.pass === '66Garageadm') {
             db.config.user = 'admin';
             db.config.pass = '0000';
@@ -264,11 +303,8 @@
 
         let clienteAtualId = null;
 
-        // FUNÇÃO CENTRAL DE SALVAMENTO (LOCAL, NUVEM E NOVO AUTO-SAVE)
         function atualizarBancoDados() {
             localStorage.setItem('66GarageDB', JSON.stringify(db));
-            
-            // Dispara o Auto-Save silencioso local se ativado
             executarAutoSaveLocal();
 
             if (logadoComGoogle && fileIdDrive) {
@@ -284,19 +320,14 @@
             }
         }
 
-        // --- INÍCIO DO SISTEMA DE AUTO-SAVE LOCAL ---
         async function configurarAutoSave() {
             try {
-                // Abre o prompt nativo do navegador para escolher uma pasta
                 autoSaveDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
-                
-                // Atualiza o botão visualmente
                 let btn = document.getElementById('btn-autosave');
                 btn.innerHTML = '✅ Auto-Save Ativo nesta Sessão';
                 btn.style.background = 'var(--success)';
                 btn.style.color = '#020617';
                 btn.style.borderColor = 'var(--success)';
-                
                 mostrarToast("Pasta de Auto-Save conectada com sucesso!", "var(--success)");
             } catch (err) {
                 console.error(err);
@@ -305,16 +336,11 @@
         }
 
         async function executarAutoSaveLocal() {
-            // Se o usuário não ativou a pasta ainda, ignora silenciosamente
             if (!autoSaveDirHandle) return;
-            
             try {
-                // Gera a data atual para nomear o arquivo sem caracteres inválidos (ex: 2026-03-07_20-30-15)
                 let agora = new Date();
                 let dataStr = `${agora.getFullYear()}-${String(agora.getMonth()+1).padStart(2,'0')}-${String(agora.getDate()).padStart(2,'0')}_${String(agora.getHours()).padStart(2,'0')}-${String(agora.getMinutes()).padStart(2,'0')}-${String(agora.getSeconds()).padStart(2,'0')}`;
                 let fileName = `AutoSave_66Garage_${dataStr}.json`;
-                
-                // Cria o arquivo dentro da pasta escolhida
                 const fileHandle = await autoSaveDirHandle.getFileHandle(fileName, { create: true });
                 const writable = await fileHandle.createWritable();
                 await writable.write(JSON.stringify(db, null, 2));
@@ -323,9 +349,7 @@
                 console.error("Falha no Auto-Save em Background", err);
             }
         }
-        // --- FIM DO SISTEMA DE AUTO-SAVE LOCAL ---
 
-        // SISTEMA DE POP-UP (TOASTS)
         function mostrarToast(mensagem, cor = 'var(--primary)') {
             let container = document.getElementById('toastContainer');
             let toast = document.createElement('div');
@@ -340,7 +364,6 @@
             }, 7000);
         }
 
-        // UTILITÁRIOS DE DATA
         function obterSegundaFeiraStr(dataObj) {
             let dia = new Date(dataObj);
             let day = dia.getDay();
@@ -371,14 +394,11 @@
             else { passInput.type = 'password'; toggleBtn.classList.remove('pass-toggle-visible'); eyeIcon.innerHTML = `<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>`; }
         }
 
-        // CÓDIGO DE DISPARO DO LOGIN
         function iniciarLoginGoogle() {
             if (!gapiInited || !gisInited) return alert("Aguarde, conectando servidores Google...");
-            
             let box = document.getElementById('modalContent');
             box.innerHTML = `<div class="loader loader-google"></div><h3 style="color: #4285F4; font-size: 18px;">Aguarde, conectando servidores Google...</h3><p style="color: var(--text-muted); font-size: 13px; margin-top:10px;">Autenticação segura via Google Workspace.</p>`;
             document.getElementById('customModal').classList.add('show');
-
             try {
                 tokenClient.requestAccessToken({prompt: 'select_account'}); 
             } catch (err) {
@@ -387,21 +407,17 @@
             }
         }
 
-        // CÓDIGO DE PROCESSAMENTO DO CALLBACK
         async function processarRespostaGoogle(resp) {
             if (resp.error !== undefined) {
                 fecharModal();
                 console.error('Erro detalhado:', resp);
-                return alert('Acesso bloqueado pelo Google. \nVerifique se o seu domínio está autorizado no Google Cloud Console.\nErro reportado: ' + resp.error);
+                return alert('Erro reportado: ' + resp.error);
             }
-            
             logadoComGoogle = true;
             document.getElementById('nuvem-status').innerText = "Nuvem (Google Drive)";
             document.getElementById('nuvem-status').style.color = "#34A853";
             document.getElementById('nuvem-status').style.borderColor = "#34A853";
-
             await gerenciarArquivoDrive();
-
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('app-screen').classList.remove('hidden');
             fecharModal();
@@ -410,13 +426,8 @@
 
         async function gerenciarArquivoDrive() {
             try {
-                let response = await gapi.client.drive.files.list({
-                    spaces: 'appDataFolder',
-                    fields: 'files(id, name)',
-                    pageSize: 1
-                });
+                let response = await gapi.client.drive.files.list({ spaces: 'appDataFolder', fields: 'files(id, name)', pageSize: 1 });
                 let files = response.result.files;
-
                 if (files && files.length > 0) {
                     fileIdDrive = files[0].id;
                     let getResp = await gapi.client.drive.files.get({ fileId: fileIdDrive, alt: 'media' });
@@ -429,29 +440,12 @@
                     const boundary = '-------314159265358979323846';
                     const delimiter = "\r\n--" + boundary + "\r\n";
                     const close_delim = "\r\n--" + boundary + "--";
-                    const multipartRequestBody =
-                        delimiter +
-                        'Content-Type: application/json\r\n\r\n' +
-                        JSON.stringify({'name': '66GarageDB.json', 'parents': ['appDataFolder']}) +
-                        delimiter +
-                        'Content-Type: application/json\r\n\r\n' +
-                        JSON.stringify(db) +
-                        close_delim;
-
-                    let req = await gapi.client.request({
-                        'path': '/upload/drive/v3/files',
-                        'method': 'POST',
-                        'params': {'uploadType': 'multipart'},
-                        'headers': {
-                            'Content-Type': 'multipart/related; boundary="' + boundary + '"'
-                        },
-                        'body': multipartRequestBody
-                    });
+                    const multipartRequestBody = delimiter + 'Content-Type: application/json\r\n\r\n' + JSON.stringify({'name': '66GarageDB.json', 'parents': ['appDataFolder']}) + delimiter + 'Content-Type: application/json\r\n\r\n' + JSON.stringify(db) + close_delim;
+                    let req = await gapi.client.request({ 'path': '/upload/drive/v3/files', 'method': 'POST', 'params': {'uploadType': 'multipart'}, 'headers': { 'Content-Type': 'multipart/related; boundary="' + boundary + '"' }, 'body': multipartRequestBody });
                     fileIdDrive = req.result.id;
                 }
             } catch (err) {
                 console.error('Erro Drive:', err);
-                alert('Erro ao sincronizar com o Google Drive.');
             }
         }
 
@@ -462,12 +456,12 @@
         }
         
         function fecharModal() { document.getElementById('customModal').classList.remove('show'); }
-        function confirmarSair() { document.getElementById('config-menu').classList.remove('show'); let box = document.getElementById('modalContent'); box.innerHTML = `<h3 style="color:var(--text-main); margin-bottom:15px; font-size: 20px;">Deseja realmente sair da seção atual ?</h3><p style="color:var(--text-muted); margin-bottom:25px; font-size:14px;">Todo o seu progresso será salvo automaticamente${logadoComGoogle ? ' na sua Nuvem Google' : ''}.</p><div style="display:flex; gap:15px; justify-content:center;"><button class="btn btn-success" style="width:120px;" onclick="executarSair()">Sim</button><button class="btn btn-danger" style="width:120px;" onclick="fecharModal()">Não</button></div>`; document.getElementById('customModal').classList.add('show'); }
+        function confirmarSair() { document.getElementById('config-menu').classList.remove('show'); let box = document.getElementById('modalContent'); box.innerHTML = `<h3 style="color:var(--text-main); margin-bottom:15px; font-size: 20px;">Deseja realmente sair da seção atual ?</h3><p style="color:var(--text-muted); margin-bottom:25px; font-size:14px;">Todo o seu progresso será salvo automaticamente.</p><div style="display:flex; gap:15px; justify-content:center;"><button class="btn btn-success" style="width:120px;" onclick="executarSair()">Sim</button><button class="btn btn-danger" style="width:120px;" onclick="fecharModal()">Não</button></div>`; document.getElementById('customModal').classList.add('show'); }
         function executarSair() { atualizarBancoDados(); sincronizarSaidaGoogle(); }
         function exportarBackup() { let dataStr = JSON.stringify(db, null, 2); let blob = new Blob([dataStr], { type: "application/json" }); let url = URL.createObjectURL(blob); let a = document.createElement('a'); a.href = url; a.download = `66Garage_Backup_${new Date().toLocaleDateString().replace(/\//g, '-')}.json`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); document.getElementById('config-menu').classList.remove('show'); let box = document.getElementById('modalContent'); box.innerHTML = `<div style="font-size: 50px; color: var(--success); margin-bottom: 10px;">💾</div><h3 style="color: var(--success);">Backup Salvo!</h3>`; document.getElementById('customModal').classList.add('show'); setTimeout(fecharModal, 2500); }
-        function importarBackup(event) { let file = event.target.files[0]; if(!file) return; let reader = new FileReader(); reader.onload = function(e) { try { let importDb = JSON.parse(e.target.result); if(importDb && importDb.config) { db = importDb; atualizarBancoDados(); document.getElementById('config-menu').classList.remove('show'); let box = document.getElementById('modalContent'); box.innerHTML = `<div class="loader"></div><h3 style="color: var(--success);">Restaurando Banco de Dados...</h3>`; document.getElementById('customModal').classList.add('show'); setTimeout(() => { location.reload(); }, 2000); } else { alert("Arquivo inválido."); } } catch(err) { alert("Erro ao ler o arquivo."); } }; reader.readAsText(file); }
-        function mascaraTelefone(v) { v = v.replace(/\D/g, ""); if(v.length > 11) v = v.substring(0, 11); if(v.length > 10) return v.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3"); if(v.length > 6) return v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3"); if(v.length > 2) return v.replace(/^(\d{2})(\d{0,5})/, "($1) $2"); return v; }
-        function mascaraPlaca(v) { v = v.replace(/[^a-zA-Z0-9]/g, "").toUpperCase(); if(v.length > 7) v = v.substring(0, 7); if(v.length > 3) return v.substring(0, 3) + "-" + v.substring(3); return v; }
+        function importarBackup(event) { let file = event.target.files[0]; if(!file) return; let reader = new FileReader(); reader.onload = function(e) { try { let importDb = JSON.parse(e.target.result); if(importDb && importDb.config) { db = importDb; atualizarBancoDados(); document.getElementById('config-menu').classList.remove('show'); let box = document.getElementById('modalContent'); box.innerHTML = `<div class="loader"></div><h3 style="color: var(--success);">Restaurando Banco de Dados...</h3>`; document.getElementById('customModal').classList.add('show'); setTimeout(() => { location.reload(); }, 2000); } } catch(err) { alert("Erro ao ler o arquivo."); } }; reader.readAsText(file); }
+        function mascaraTelefone(v) { v = v.replace(/\D/g, ""); if(v.length > 11) v = v.substring(0, 11); if(v.length > 10) return v.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3"); if(v.length > 2) return v.replace(/^(\d{2})(\d{0,5})/, "($1) $2"); return v; }
+        function mascaraPlaca(v) { v = v.replace(/[^a-zA-Z0-9]/g, "").toUpperCase(); if(v.length > 3) return v.substring(0, 3) + "-" + v.substring(3, 7); return v; }
         function mascaraChassi(v) { v = v.replace(/[^a-zA-Z0-9]/g, "").toUpperCase(); if(v.length > 17) v = v.substring(0, 17); return v; }
         function confirmarZerarSaldos() { let box = document.getElementById('modalContent'); box.innerHTML = `<h3 style="color:var(--text-main); margin-bottom:25px; font-size: 18px; line-height: 1.5;">Você confirma a exclusão de todos os dados de saldos e históricos do sistema?</h3><div style="display:flex; gap:15px; justify-content:center;"><button class="btn btn-success" style="width:120px;" onclick="executarZerarSaldos()">Sim</button><button class="btn btn-danger" style="width:120px;" onclick="fecharModal()">Não</button></div>`; document.getElementById('customModal').classList.add('show'); }
         function executarZerarSaldos() { db.financas = []; atualizarBancoDados(); renderizarDash(); let box = document.getElementById('modalContent'); box.innerHTML = `<div style="font-size: 70px; margin-bottom: 15px; color: #39ff14; text-shadow: 0 0 25px rgba(57, 255, 20, 0.8);">✅</div><h3 style="color: #39ff14; font-size: 22px; text-shadow: 0 0 15px rgba(57, 255, 20, 0.6); margin-bottom:10px;">Exclusão bem sucedida</h3>`; setTimeout(fecharModal, 2500); }
@@ -476,16 +470,22 @@
         function toggleMenu() { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('menuOverlay').classList.toggle('show'); }
         
         function atualizarTextosConfig() { 
-            document.getElementById('login-company-name').innerText = db.config.empresa; 
+            let loginNameEl = document.getElementById('login-company-name');
+            if(loginNameEl) loginNameEl.innerText = db.config.empresa; 
             document.getElementById('topbar-company-name').innerText = db.config.empresa; 
+            
+            let valHoraDisplay = document.getElementById('val-hora-display');
+            if(valHoraDisplay) valHoraDisplay.innerText = db.config.valorHora;
+
             let logoLogin = document.getElementById('login-logo-text'); 
             let logoTopbar = document.getElementById('topbar-logo-text'); 
+            
             if (db.config.logo) { 
-                logoLogin.innerText = ''; logoLogin.style.backgroundImage = `url(${db.config.logo})`; logoLogin.style.backgroundSize = 'cover'; logoLogin.style.backgroundPosition = 'center'; 
-                logoTopbar.innerText = ''; logoTopbar.style.backgroundImage = `url(${db.config.logo})`; logoTopbar.style.backgroundSize = 'cover'; logoTopbar.style.backgroundPosition = 'center'; 
+                if(logoLogin) { logoLogin.innerText = ''; logoLogin.style.backgroundImage = `url(${db.config.logo})`; logoLogin.style.backgroundSize = 'cover'; }
+                logoTopbar.innerText = ''; logoTopbar.style.backgroundImage = `url(${db.config.logo})`; logoTopbar.style.backgroundSize = 'cover'; 
             } else { 
                 let empInicial = db.config.empresa.substring(0, 2).toUpperCase(); 
-                logoLogin.innerText = empInicial; logoLogin.style.backgroundImage = 'none'; 
+                if(logoLogin) { logoLogin.innerText = empInicial; logoLogin.style.backgroundImage = 'none'; }
                 logoTopbar.innerText = empInicial; logoTopbar.style.backgroundImage = 'none'; 
             }
             
@@ -493,14 +493,46 @@
             if (abaInicio && !abaInicio.classList.contains('hidden')) { renderizarInicio(); }
         } 
         atualizarTextosConfig();
+
+        function alterarValorHora() {
+            let box = document.getElementById('modalContent');
+            box.innerHTML = `
+                <h3 style="color: var(--primary); margin-bottom: 20px;">Valor da Mão de Obra</h3>
+                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Ajuste o valor base cobrado por hora técnica.</p>
+                
+                <div style="background: var(--bg-color); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+                    <label style="display:block; font-size:11px; color:var(--primary); text-transform:uppercase; font-weight:800; margin-bottom:8px; text-align:left;">Novo Valor (R$)</label>
+                    <input type="number" id="modal-novo-valor" value="${db.config.valorHora}" placeholder="0.00" style="margin:0; text-align:center; font-size:24px; color:var(--accent); font-weight:bold; border-color:var(--primary); box-shadow:var(--primary-glow);">
+                </div>
+
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-success" style="flex: 1; font-size:14px;" onclick="salvarValorHoraModal()">ATUALIZAR</button>
+                    <button class="btn btn-danger" style="flex: 1; font-size:14px;" onclick="fecharModal()">CANCELAR</button>
+                </div>
+            `;
+            document.getElementById('customModal').classList.add('show');
+            setTimeout(() => document.getElementById('modal-novo-valor').focus(), 150);
+        }
+
+        function salvarValorHoraModal() {
+            let novoValor = parseFloat(document.getElementById('modal-novo-valor').value);
+            if (!isNaN(novoValor) && novoValor > 0) {
+                db.config.valorHora = novoValor;
+                atualizarBancoDados();
+                atualizarTextosConfig();
+                if (typeof calcularServico === "function") calcularServico();
+                fecharModal();
+                mostrarToast("Valor da hora atualizado!", "var(--success)");
+            } else {
+                mostrarToast("Insira um valor válido!", "var(--danger)");
+            }
+        }
         
         function fazerLogin() { 
             let u = document.getElementById('login-user').value; let p = document.getElementById('login-pass').value; 
             if (u === db.config.user && p === db.config.pass) { 
-                
                 let overlay = document.getElementById('startup-overlay');
                 overlay.classList.remove('hidden', 'fade-out');
-
                 setTimeout(() => {
                     overlay.classList.add('fade-out');
                     setTimeout(() => {
@@ -510,23 +542,14 @@
                         navegar('inicio'); 
                     }, 500); 
                 }, 1500);
-
             } else { 
                 alert("Usuário ou senha incorretos."); 
             } 
         }
 
         function toggleConfig() { document.getElementById('config-menu').classList.toggle('show'); document.getElementById('cfg-empresa').value = db.config.empresa; document.getElementById('cfg-user').value = db.config.user; }
-        
-        function salvarConfig(e) { 
-            e.stopPropagation(); 
-            let emp = document.getElementById('cfg-empresa').value; let usr = document.getElementById('cfg-user').value; let pwd = document.getElementById('cfg-pass').value; let logoInput = document.getElementById('cfg-logo'); 
-            if(emp) db.config.empresa = emp; if(usr) db.config.user = usr; if(pwd) db.config.pass = pwd; 
-            if (logoInput.files && logoInput.files[0]) { let reader = new FileReader(); reader.onload = function(e) { db.config.logo = e.target.result; finalizarSalvamento(); }; reader.readAsDataURL(logoInput.files[0]); } 
-            else { finalizarSalvamento(); } 
-        }
-        
-        function finalizarSalvamento() { atualizarBancoDados(); atualizarTextosConfig(); document.getElementById('config-menu').classList.remove('show'); let box = document.getElementById('modalContent'); box.innerHTML = `<h3 style="color: var(--success);">Opções atualizadas com sucesso!</h3>`; document.getElementById('customModal').classList.add('show'); setTimeout(fecharModal, 1500); }
+        function salvarConfig(e) { e.stopPropagation(); let emp = document.getElementById('cfg-empresa').value; let usr = document.getElementById('cfg-user').value; let pwd = document.getElementById('cfg-pass').value; let logoInput = document.getElementById('cfg-logo'); if(emp) db.config.empresa = emp; if(usr) db.config.user = usr; if(pwd) db.config.pass = pwd; if (logoInput.files && logoInput.files[0]) { let reader = new FileReader(); reader.onload = function(e) { db.config.logo = e.target.result; finalizarSalvamento(); }; reader.readAsDataURL(logoInput.files[0]); } else { finalizarSalvamento(); } }
+        function finalizarSalvamento() { atualizarBancoDados(); atualizarTextosConfig(); document.getElementById('config-menu').classList.remove('show'); let box = document.getElementById('modalContent'); box.innerHTML = `<h3 style="color: var(--success);">Opções atualizadas!</h3>`; document.getElementById('customModal').classList.add('show'); setTimeout(fecharModal, 1500); }
 
         function navegar(aba) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden')); document.querySelectorAll('.menu-btn').forEach(el => el.classList.remove('active'));
@@ -538,63 +561,98 @@
         function renderizarInicio() {
             verificarNotificacoesFinanceiras();
             let logoHtml = '';
-            if (db.config.logo) { logoHtml = `<div style="width: 50px; height: 50px; border-radius: 12px; background-image: url(${db.config.logo}); background-size: cover; background-position: center; border: 2px solid var(--primary); box-shadow: var(--primary-glow);"></div>`; } 
-            else { let empInicial = db.config.empresa.substring(0, 2).toUpperCase(); logoHtml = `<div style="width: 50px; height: 50px; border-radius: 12px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; color: #020617; box-shadow: var(--primary-glow); border: 2px solid var(--primary);">${empInicial}</div>`; }
-
+            if (db.config.logo) { logoHtml = `<div style="width: 50px; height: 50px; border-radius: 12px; background-image: url(${db.config.logo}); background-size: cover; border: 2px solid var(--primary);"></div>`; } 
+            else { logoHtml = `<div style="width: 50px; height: 50px; border-radius: 12px; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 20px; color: #020617; border: 2px solid var(--primary);">${db.config.empresa.substring(0, 2).toUpperCase()}</div>`; }
             document.getElementById('saudacao-usuario').innerHTML = `<div style="display: flex; align-items: center; gap: 15px;"><h2 style="color: var(--primary); font-size: 28px; margin: 0;">Olá, ${db.config.empresa}</h2> ${logoHtml}</div>`;
-            
             let lista = document.getElementById('lista-inicio-servicos'); lista.innerHTML = '';
-            let hoje = new Date(); hoje.setHours(23, 59, 59, 999); let limiteDias = new Date(); limiteDias.setDate(hoje.getDate() - 3); limiteDias.setHours(0, 0, 0, 0);
-            let recentes = [];
-
-            db.clientes.forEach(c => {
-                c.servicos.forEach((s, index) => {
-                    let partes = s.data.split('/');
-                    if(partes.length === 3) {
-                        let d = new Date(partes[2], partes[1] - 1, partes[0]);
-                        if(d >= limiteDias && d <= hoje) {
-                            recentes.push({ clienteNome: c.nome, clienteId: c.id, servicoIndex: index, dataObj: d, dataStr: s.data, nomeSrv: s.nome, total: s.total });
-                        }
-                    }
-                });
-            });
-
+            let hoje = new Date(); hoje.setHours(23, 59, 59, 999); let limiteDias = new Date(); limiteDias.setDate(hoje.getDate() - 3); let recentes = [];
+            db.clientes.forEach(c => { c.servicos.forEach((s, index) => { let partes = s.data.split('/'); if(partes.length === 3) { let d = new Date(partes[2], partes[1] - 1, partes[0]); if(d >= limiteDias && d <= hoje) recentes.push({ clienteNome: c.nome, clienteId: c.id, servicoIndex: index, dataObj: d, dataStr: s.data, nomeSrv: s.nome, total: s.total }); } }); });
             recentes.sort((a, b) => b.dataObj - a.dataObj);
-            if (recentes.length === 0) { lista.innerHTML = `<p style="color:var(--text-muted); grid-column: 1 / -1;">Nenhum serviço registrado nos últimos 3 dias.</p>`; return; }
-
-            recentes.forEach(s => {
-                lista.innerHTML += `
-                    <div class="card-item">
-                        <div><strong style="color:var(--text-main); font-size:16px;">${s.clienteNome}</strong><div style="margin: 8px 0; color:var(--text-muted); font-size:14px;">O.S: <strong style="color:var(--primary);">${s.nomeSrv}</strong><br>Data: ${s.dataStr}</div></div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding-top:10px; border-top:1px solid var(--border-color);"><strong style="color:var(--success); font-size:16px; text-shadow: 0 0 5px rgba(16,185,129,0.3);">${s.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong><button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px; border: 1px solid var(--primary); color: var(--primary);" onclick="abrirFichaPeloInicio(${s.clienteId}, ${s.servicoIndex})">Abrir Ficha</button></div>
-                    </div>`;
-            });
+            if (recentes.length === 0) { lista.innerHTML = `<p style="color:var(--text-muted);">Nenhum serviço recente.</p>`; return; }
+            recentes.forEach(s => { lista.innerHTML += `<div class="card-item"><div><strong style="color:var(--text-main);">${s.clienteNome}</strong><div style="margin: 8px 0; color:var(--text-muted); font-size:14px;">${s.nomeSrv}</div></div><div style="display:flex; justify-content:space-between; align-items:center;"><strong style="color:var(--success);">${s.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong><button class="btn btn-secondary" onclick="abrirFichaPeloInicio(${s.clienteId}, ${s.servicoIndex})">Abrir</button></div></div>`; });
         }
 
-        function abrirFichaPeloInicio(clienteId, servicoIndex) { abrirFicha(clienteId); setTimeout(() => { let c = db.clientes.find(x => x.id === clienteId); let originalIndex = servicoIndex; abrirDetalhesServico(clienteId, originalIndex); }, 100); }
-        function salvarCliente() { let nome = document.getElementById('cad-nome').value; if(!nome) return alert("Nome obrigatório!"); db.clientes.push({ id: Date.now(), nome: nome, tel: document.getElementById('cad-tel').value, email: document.getElementById('cad-email').value, modelo: document.getElementById('cad-modelo').value, placa: document.getElementById('cad-placa').value, chassi: document.getElementById('cad-chassi').value, km: document.getElementById('cad-km').value, servicos: [] }); atualizarBancoDados(); document.querySelectorAll('#view-cadastro input').forEach(i => i.value = ''); let box = document.getElementById('modalContent'); box.innerHTML = `<div style="font-size: 50px; color: var(--success); margin-bottom: 10px;">✅</div><h3 style="color: var(--success);">Cadastro Salvo!</h3>`; document.getElementById('customModal').classList.add('show'); setTimeout(() => { fecharModal(); navegar('clientes'); }, 1500); }
-        function renderizarClientes() { let lista = document.getElementById('lista-clientes'); lista.innerHTML = ''; db.clientes.forEach(c => { lista.innerHTML += `<div class="card-item"><div><strong style="font-size:18px; color:var(--text-main);">${c.nome}</strong><div style="margin: 12px 0; color:var(--text-muted); font-size:14px; line-height: 1.6;">Veículo: <strong style="color:var(--accent);">${c.modelo}</strong><br>Placa: <strong style="color:var(--text-main);">${c.placa}</strong><br>Contato: ${c.tel}</div></div><div style="display:flex; gap:10px;"><button class="btn btn-primary" style="flex:1" onclick="abrirFicha(${c.id})">Abrir Ficha</button><button class="btn btn-danger" style="width:48px" onclick="confirmarExcluirCliente(${c.id})">🗑️</button></div></div>`; }); }
-        function confirmarExcluirCliente(id) { let c = db.clientes.find(x => x.id === id); let box = document.getElementById('modalContent'); box.innerHTML = `<h3 style="color:var(--text-main); margin-bottom:15px;">Excluir Cliente?</h3><p style="color:var(--text-muted); margin-bottom:25px;">Deseja realmente apagar os dados de <strong>${c.nome}</strong>? Esta ação não pode ser desfeita.</p><div style="display:flex; gap:15px; justify-content:center;"><button class="btn btn-danger" style="width:120px;" onclick="executarExcluirCliente(${id})">Sim, Excluir</button><button class="btn btn-secondary" style="width:120px;" onclick="fecharModal()">Cancelar</button></div>`; document.getElementById('customModal').classList.add('show'); }
+        function abrirFichaPeloInicio(clienteId, servicoIndex) { abrirFicha(clienteId); setTimeout(() => { abrirDetalhesServico(clienteId, servicoIndex); }, 100); }
+        function salvarCliente() { let nome = document.getElementById('cad-nome').value; if(!nome) return alert("Nome obrigatório!"); db.clientes.push({ id: Date.now(), nome: nome, tel: document.getElementById('cad-tel').value, email: document.getElementById('cad-email').value, modelo: document.getElementById('cad-modelo').value, placa: document.getElementById('cad-placa').value, chassi: document.getElementById('cad-chassi').value, km: document.getElementById('cad-km').value, servicos: [] }); atualizarBancoDados(); document.querySelectorAll('#view-cadastro input').forEach(i => i.value = ''); navegar('clientes'); }
+        function renderizarClientes() { let lista = document.getElementById('lista-clientes'); lista.innerHTML = ''; db.clientes.forEach(c => { lista.innerHTML += `<div class="card-item"><div><strong style="font-size:18px; color:var(--text-main);">${c.nome}</strong><div style="margin: 12px 0; color:var(--text-muted); font-size:14px;">${c.modelo} | ${c.placa}</div></div><div style="display:flex; gap:10px;"><button class="btn btn-primary" style="flex:1" onclick="abrirFicha(${c.id})">Ficha</button><button class="btn btn-danger" style="width:48px" onclick="confirmarExcluirCliente(${c.id})">🗑️</button></div></div>`; }); }
+        function confirmarExcluirCliente(id) { let c = db.clientes.find(x => x.id === id); let box = document.getElementById('modalContent'); box.innerHTML = `<h3 style="color:var(--text-muted); margin-bottom:15px;">Excluir Cliente?</h3><div style="display:flex; gap:15px; justify-content:center;"><button class="btn btn-danger" style="width:120px;" onclick="executarExcluirCliente(${id})">Excluir</button><button class="btn btn-secondary" style="width:120px;" onclick="fecharModal()">Voltar</button></div>`; document.getElementById('customModal').classList.add('show'); }
         function executarExcluirCliente(id) { db.clientes = db.clientes.filter(c => c.id !== id); atualizarBancoDados(); renderizarClientes(); fecharModal(); }
-        function abrirFicha(id) { clienteAtualId = id; let c = db.clientes.find(x => x.id === id); let chassiAtual = c.chassi || ''; document.getElementById('ficha-dados-cliente').innerHTML = `<div id="ficha-modo-leitura"><div style="display:flex; justify-content:space-between;"><div><h2 style="color:var(--primary); margin-bottom:10px;">${c.nome}</h2><p style="color:var(--text-muted); margin-bottom: 5px;"><strong style="color:var(--accent)">Veículo:</strong> ${c.modelo} | <strong style="color:var(--accent)">Placa:</strong> ${c.placa} | <strong>Km:</strong> ${c.km}</p><p style="color:var(--text-muted); margin-bottom: 5px;"><strong style="color:var(--text-main)">Chassi:</strong> ${chassiAtual || 'Não informado'}</p><p style="color:var(--text-muted);"><strong>Contato:</strong> ${c.tel} | ${c.email}</p></div><button class="btn btn-secondary" onclick="toggleEdicaoCliente()">Editar</button></div></div><div id="ficha-modo-edicao" class="hidden"><h3 style="color:var(--text-main); margin-bottom:15px;">Editar Cadastro</h3><div class="row-form"><input type="text" id="edit-nome" value="${c.nome}" placeholder="Nome"><input type="text" id="edit-tel" value="${c.tel}" placeholder="Telefone" oninput="this.value = mascaraTelefone(this.value)"><input type="email" id="edit-email" value="${c.email}" placeholder="E-mail"></div><div class="row-form" style="margin-top: 15px;"><input type="text" id="edit-modelo" value="${c.modelo}" placeholder="Modelo"><input type="text" id="edit-placa" value="${c.placa}" placeholder="Placa" oninput="this.value = mascaraPlaca(this.value)"><input type="text" id="edit-km" value="${c.km}" placeholder="Km"></div><div class="row-form" style="margin-top: 15px;"><input type="text" id="edit-chassi" value="${chassiAtual}" placeholder="Chassi (17 caracteres)" oninput="this.value = mascaraChassi(this.value)"></div><div style="margin-top: 15px; display:flex; gap:10px;"><button class="btn btn-success" onclick="salvarEdicaoCliente(${id})">Salvar Alterações</button><button class="btn btn-danger" onclick="toggleEdicaoCliente()">Cancelar</button></div></div>`; document.getElementById('srv-nome').value = ''; document.getElementById('srv-diag').value = ''; document.getElementById('srv-tempo').value = ''; document.getElementById('srv-pecas').value = ''; calcularServico(); renderizarHistoricoServicos(c); navegar('ficha-cliente'); }
+        function abrirFicha(id) { clienteAtualId = id; let c = db.clientes.find(x => x.id === id); document.getElementById('ficha-dados-cliente').innerHTML = `<div id="ficha-modo-leitura"><div style="display:flex; justify-content:space-between;"><div><h2 style="color:var(--primary);">${c.nome}</h2><p style="color:var(--text-muted);">${c.modelo} | ${c.placa}</p></div><button class="btn btn-secondary" onclick="toggleEdicaoCliente()">Editar</button></div></div><div id="ficha-modo-edicao" class="hidden"><input type="text" id="edit-nome" value="${c.nome}"><div style="margin-top: 15px; display:flex; gap:10px;"><button class="btn btn-success" onclick="salvarEdicaoCliente(${id})">Salvar</button><button class="btn btn-danger" onclick="toggleEdicaoCliente()">Cancelar</button></div></div>`; renderizarHistoricoServicos(c); navegar('ficha-cliente'); }
         function toggleEdicaoCliente() { document.getElementById('ficha-modo-leitura').classList.toggle('hidden'); document.getElementById('ficha-modo-edicao').classList.toggle('hidden'); }
-        function salvarEdicaoCliente(id) { let c = db.clientes.find(x => x.id === id); c.nome = document.getElementById('edit-nome').value; c.tel = document.getElementById('edit-tel').value; c.email = document.getElementById('edit-email').value; c.modelo = document.getElementById('edit-modelo').value; c.placa = document.getElementById('edit-placa').value; c.km = document.getElementById('edit-km').value; c.chassi = document.getElementById('edit-chassi').value; atualizarBancoDados(); abrirFicha(id); }
-        function calcularServico() { let tempo = parseFloat(document.getElementById('srv-tempo').value) || 0; let pecas = parseFloat(document.getElementById('srv-pecas').value) || 0; document.getElementById('srv-val-mao').value = (tempo * 120).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); document.getElementById('srv-total').value = ((tempo * 120) + pecas).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
-        function salvarServico() { let nomeSrv = document.getElementById('srv-nome').value; let tempo = parseFloat(document.getElementById('srv-tempo').value) || 0; let pecas = parseFloat(document.getElementById('srv-pecas').value) || 0; let total = (tempo * 120) + pecas; if(!nomeSrv || total === 0) return alert("Preencha os dados!"); let c = db.clientes.find(x => x.id === clienteAtualId); c.servicos.push({ data: new Date().toLocaleDateString(), nome: nomeSrv, diag: document.getElementById('srv-diag').value, tempo: tempo, maoObra: (tempo*120), pecas: pecas, total: total }); db.financas.push({ tipo: 'entrada', desc: `Serviço (O.S): ${nomeSrv} - ${c.nome}`, valor: total, data: Date.now() }); atualizarBancoDados(); renderizarHistoricoServicos(c); document.getElementById('srv-nome').value = ''; document.getElementById('srv-diag').value = ''; document.getElementById('srv-tempo').value = ''; document.getElementById('srv-pecas').value = ''; calcularServico(); let box = document.getElementById('modalContent'); box.innerHTML = `<div style="font-size: 50px; color: var(--success); margin-bottom: 10px;">✅</div><h3 style="color: var(--success);">Serviço registrado com sucesso!</h3>`; document.getElementById('customModal').classList.add('show'); setTimeout(fecharModal, 1200); }
-        function renderizarHistoricoServicos(cliente) { let hist = document.getElementById('historico-servicos'); hist.innerHTML = '<h3 style="margin-bottom: 20px; color:var(--primary);">Histórico de Serviços</h3>'; if(cliente.servicos.length === 0) { hist.innerHTML += "<p style='color:var(--text-muted);'>Nenhum serviço registrado.</p>"; } cliente.servicos.slice().reverse().forEach((s, reversedIndex) => { let originalIndex = cliente.servicos.length - 1 - reversedIndex; hist.innerHTML += `<div class="history-card" style="display:flex; justify-content:space-between; align-items:center;"><div onclick="abrirDetalhesServico(${cliente.id}, ${originalIndex})" style="flex:1"><strong style="color:var(--text-main); font-size: 16px;">${s.data} - ${s.nome}</strong><br><strong style="color:var(--primary); text-shadow: var(--primary-glow); font-size: 16px;">${s.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></div><button class="btn btn-secondary" style="padding: 8px 12px; font-size: 12px; border: 1px solid var(--primary);" onclick="imprimirRelatorio(${cliente.id}, ${originalIndex})">🖨️ Relatório</button></div>`; }); }
-        function imprimirRelatorio(clienteId, servicoIndex) { let c = db.clientes.find(x => x.id === clienteId); let s = c.servicos[servicoIndex]; let empresa = db.config.empresa; let logo = db.config.logo; let printWindow = window.open('', '_blank'); printWindow.document.write(`<html><head><title>Relatório - ${empresa}</title><style>body { font-family: 'Segoe UI', sans-serif; padding: 40px; color: #1a1a1a; line-height: 1.6; } .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; } .logo { max-height: 80px; margin-bottom: 10px; border-radius: 8px; } .company-name { font-size: 26px; font-weight: bold; text-transform: uppercase; margin: 5px 0; } .thanks { font-style: italic; color: #555; margin-bottom: 10px; font-size: 14px; } .section { margin-bottom: 15px; } .label { font-weight: bold; font-size: 12px; color: #666; text-transform: uppercase; display: block; } .value { font-size: 16px; margin-bottom: 5px; display: block; } .technical-box { background: #f9f9f9; padding: 15px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px; font-size: 14px; } .finance-table { width: 100%; border-collapse: collapse; margin-top: 30px; } .finance-table td { padding: 10px 0; border-bottom: 1px dashed #ccc; } .total-row { font-size: 20px; font-weight: bold; color: #000; border-top: 2px solid #000 !important; } @media print { .no-print { display: none; } }</style></head><body><div class="header">${logo ? `<img src="${logo}" class="logo">` : ''}<div class="company-name">${empresa}</div><div class="thanks">A ${empresa} agradece a preferência!</div></div><div class="section"><span class="label">Cliente:</span><span class="value">${c.nome} | Veículo: ${c.modelo} (${c.placa})</span></div><div style="display:flex; justify-content:space-between;"><div class="section"><span class="label">Data:</span><span class="value">${s.data}</span></div><div class="section" style="text-align:right"><span class="label">Serviço:</span><span class="value">${s.nome}</span></div></div><div class="section"><span class="label">Diagnóstico Técnico:</span><div class="technical-box">${s.diag || 'Nenhum detalhe técnico registrado.'}</div></div><table class="finance-table"><tr><td>Mão de Obra (${s.tempo}h):</td><td style="text-align:right">${s.maoObra.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td></tr><tr><td>Custo Peças:</td><td style="text-align:right">${s.pecas.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td></tr><tr class="total-row"><td style="padding-top:15px;">Total da O.S:</td><td style="text-align:right; padding-top:15px;">${s.total.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</td></tr></table></body></html>`); printWindow.document.close(); setTimeout(() => { printWindow.print(); }, 500); }
-        function abrirDetalhesServico(clienteId, servicoIndex) { let c = db.clientes.find(x => x.id === clienteId); let s = c.servicos[servicoIndex]; let box = document.getElementById('modalContent'); box.innerHTML = `<h2 style="color: var(--primary); margin-bottom: 20px;">Detalhes da O.S.</h2><div style="text-align: left; background: var(--card-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); color: var(--text-main); line-height: 1.8;"><p><strong style="color: var(--primary);">Data:</strong> ${s.data}</p><p><strong style="color: var(--primary);">Serviço:</strong> ${s.nome}</p><p><strong style="color: var(--primary);">Diagnóstico Técnico:</strong> <br> <span style="color: var(--text-muted);">${s.diag || 'Não registrado.'}</span></p><hr style="border: 0; border-top: 1px dashed var(--border-color); margin: 15px 0;"><div style="display: flex; justify-content: space-between;"><span style="color: var(--text-muted);">Mão de Obra (${s.tempo}h):</span><strong>${s.maoObra.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</strong></div><div style="display: flex; justify-content: space-between;"><span style="color: var(--text-muted);">Custo Peças:</span><strong>${s.pecas.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</strong></div><hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;"><div style="display: flex; justify-content: space-between; align-items: center;"><span style="color: var(--text-main); font-weight: bold; font-size: 18px;">Total da O.S:</span><strong style="color: var(--success); font-size: 22px;">${s.total.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}</strong></div></div><button class="btn btn-secondary" style="width: 100%; margin-top: 20px;" onclick="fecharModal()">Fechar Detalhes</button>`; document.getElementById('customModal').classList.add('show'); }
-        function salvarFornecedor() { let nome = document.getElementById('for-nome').value; if(!nome) return alert("O nome é obrigatório!"); db.fornecedores.push({ id: Date.now(), nome: nome, cnpj: document.getElementById('for-cnpj').value, tel: document.getElementById('for-tel').value, item: document.getElementById('for-item').value, qtdComprada: 0 }); atualizarBancoDados(); document.querySelectorAll('#view-fornecedores input').forEach(i => i.value = ''); renderizarFornecedores(); }
-        function renderizarFornecedores() { let lista = document.getElementById('lista-fornecedores'); lista.innerHTML = ''; db.fornecedores.forEach(f => { lista.innerHTML += `<div class="card-item"><div><div style="display:flex; justify-content:space-between; margin-bottom:12px;"><strong style="font-size:18px; color:var(--text-main);">${f.nome}</strong><span style="background:var(--border-color); color:var(--accent); padding:4px 10px; border-radius:8px; font-size:12px; font-weight:bold;">${f.qtdComprada} unid.</span></div><div style="color:var(--text-muted); font-size:14px; margin-bottom:15px; line-height: 1.6;">Item: <strong style="color:var(--accent);">${f.item}</strong><br>Tel: ${f.tel} | CNPJ: ${f.cnpj}</div></div><button class="btn btn-primary" onclick="registrarCompraFornecedor(${f.id})">+ Compra Registrada</button></div>`; }); }
-        function registrarCompraFornecedor(id) { let f = db.fornecedores.find(x => x.id === id); f.qtdComprada++; atualizarBancoDados(); renderizarFornecedores(); alert("Compra registrada!"); }
-        function salvarMovimentacao() { let desc = document.getElementById('fin-desc').value; let val = parseFloat(document.getElementById('fin-valor').value); let tipo = document.getElementById('fin-tipo').value; if(!desc || isNaN(val)) return alert("Preencha descrição e valor."); db.financas.push({ tipo: tipo, desc: desc, valor: val, data: Date.now() }); atualizarBancoDados(); document.getElementById('fin-desc').value = ''; document.getElementById('fin-valor').value = ''; renderizarDash(); let box = document.getElementById('modalContent'); box.innerHTML = `<div style="font-size: 50px; color: var(--success); margin-bottom: 10px;">✅</div><h3 style="color: var(--success);">Movimentação Registrada!</h3>`; document.getElementById('customModal').classList.add('show'); setTimeout(fecharModal, 1500); }
-        function renderizarDash() { verificarNotificacoesFinanceiras(); let hoje = new Date(); let inicioDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate()).getTime(); let diaDaSemana = hoje.getDay(); let diasParaSegunda = diaDaSemana === 0 ? 6 : diaDaSemana - 1; let inicioSemana = inicioDia - (diasParaSegunda * 86400000); let inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1).getTime(); let inicioAno = new Date(hoje.getFullYear(), 0, 1).getTime(); let entDia = 0, saiDia = 0; let totais = { semana: 0, mes: 0, ano: 0 }; db.financas.forEach(f => { let valor = f.valor; if(f.data >= inicioDia) { if(f.tipo === 'entrada') entDia += valor; if(f.tipo === 'saida') saiDia += valor; } let saldoItem = (f.tipo === 'entrada') ? valor : -valor; if(f.data >= inicioSemana) totais.semana += saldoItem; if(f.data >= inicioMes) totais.mes += saldoItem; if(f.data >= inicioAno) totais.ano += saldoItem; }); let saldoDia = entDia - saiDia; document.getElementById('dash-dia-ent').innerText = entDia.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); document.getElementById('dash-dia-sai').innerText = saiDia.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); document.getElementById('dash-dia-saldo').innerText = saldoDia.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); document.getElementById('dash-dia-saldo').style.color = saldoDia >= 0 ? 'var(--primary)' : 'var(--danger)'; document.getElementById('dash-semana').innerText = totais.semana.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); document.getElementById('dash-mes').innerText = totais.mes.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); document.getElementById('dash-ano').innerText = totais.ano.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); renderizarHistoricoMeses(); }
-        function renderizarHistoricoMeses() { let container = document.getElementById('historico-meses'); if(!container) return; container.innerHTML = ''; let historico = {}; let hoje = new Date(); let mesAtualStr = obterMesStr(hoje); db.financas.forEach(f => { let d = new Date(f.data); let mesStr = obterMesStr(d); if(mesStr === mesAtualStr) return; if(!historico[mesStr]) historico[mesStr] = { entradas: 0, saidas: 0 }; if(f.tipo === 'entrada') historico[mesStr].entradas += f.valor; if(f.tipo === 'saida') historico[mesStr].saidas += f.valor; }); let mesesOrd = Object.keys(historico).sort((a,b) => b.localeCompare(a)); if(mesesOrd.length === 0) { container.innerHTML = `<p style="color:var(--text-muted); font-size:14px;">Ainda não há registros de fechamentos de meses anteriores no banco de dados.</p>`; return; } mesesOrd.forEach(m => { let [ano, mes] = m.split('-'); let nomeMes = new Date(ano, mes - 1, 1).toLocaleString('pt-BR', { month: 'long', year: 'numeric' }); nomeMes = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1); let ent = historico[m].entradas; let sai = historico[m].saidas; let saldo = ent - sai; let corSaldo = saldo >= 0 ? 'var(--success)' : 'var(--danger)'; container.innerHTML += `<div class="card-item" style="border-left-color: ${corSaldo};"><strong style="color:var(--text-main); font-size:16px; text-transform: capitalize;">${nomeMes}</strong><hr style="border:0; border-top:1px dashed var(--border-color); margin:10px 0;"><div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:14px;"><span style="color:var(--text-muted);">Total Entradas:</span><span style="color:var(--primary); font-weight:bold;">${ent.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span></div><div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px;"><span style="color:var(--text-muted);">Total Saídas:</span><span style="color:var(--danger); font-weight:bold;">${sai.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span></div><div style="display:flex; justify-content:space-between; font-weight:bold; font-size:16px; padding-top: 10px; border-top: 1px solid var(--border-color);"><span style="color:var(--text-main);">Fechamento Caixa:</span><span style="color:${corSaldo};">${saldo.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}</span></div></div>`; }); }
-        function salvarEstoque() { let nome = document.getElementById('est-nome').value; let qtd = parseInt(document.getElementById('est-qtd').value); let valor = parseFloat(document.getElementById('est-valor').value); if(!nome || isNaN(qtd) || isNaN(valor)) return alert("Preencha corretamente."); if(!db.estoque) db.estoque = []; db.estoque.push({ id: Date.now(), nome: nome, qtd: qtd, valor: valor }); db.financas.push({ tipo: 'saida', desc: `Estoque: ${qtd}x ${nome}`, valor: (qtd*valor), data: Date.now() }); atualizarBancoDados(); renderizarEstoque(); document.getElementById('est-nome').value = ''; document.getElementById('est-qtd').value = ''; document.getElementById('est-valor').value = ''; }
-        function renderizarEstoque() { let lista = document.getElementById('lista-estoque'); if(!lista) return; lista.innerHTML = ''; if(!db.estoque) db.estoque = []; db.estoque.forEach(e => { lista.innerHTML += `<div class="card-item"><div><div style="display:flex; justify-content:space-between; margin-bottom:12px;"><strong style="font-size:18px; color:var(--text-main);">${e.nome}</strong><span style="background:var(--border-color); color:var(--accent); padding:4px 10px; border-radius:8px; font-size:12px; font-weight:bold;">${e.qtd} unid.</span></div><div style="color:var(--text-muted); font-size:14px; margin-bottom:15px;">Valor Pago: <strong style="color:var(--danger);">${e.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></div></div><button class="btn btn-danger" onclick="removerEstoque(${e.id})">Remover Produto</button></div>`; }); }
+        function salvarEdicaoCliente(id) { let c = db.clientes.find(x => x.id === id); c.nome = document.getElementById('edit-nome').value; atualizarBancoDados(); abrirFicha(id); }
+        
+        function calcularServico() { 
+            let tempo = parseFloat(document.getElementById('srv-tempo').value) || 0; 
+            let pecas = parseFloat(document.getElementById('srv-pecas').value) || 0; 
+            let vHora = db.config.valorHora || 120;
+            document.getElementById('srv-val-mao').value = (tempo * vHora).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
+            document.getElementById('srv-total').value = ((tempo * vHora) + pecas).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
+        }
+        
+        function salvarServico() { 
+            let nomeSrv = document.getElementById('srv-nome').value; 
+            let vHora = db.config.valorHora || 120;
+            let total = (parseFloat(document.getElementById('srv-tempo').value || 0) * vHora) + (parseFloat(document.getElementById('srv-pecas').value) || 0); 
+            if(!nomeSrv) return alert("Preencha os dados!"); 
+            let c = db.clientes.find(x => x.id === clienteAtualId); 
+            c.servicos.push({ data: new Date().toLocaleDateString(), nome: nomeSrv, diag: document.getElementById('srv-diag').value, total: total }); 
+            db.financas.push({ tipo: 'entrada', desc: `Serviço: ${nomeSrv}`, valor: total, data: Date.now() }); 
+            atualizarBancoDados(); renderizarHistoricoServicos(c); 
+        }
+        
+        function renderizarHistoricoServicos(cliente) { let hist = document.getElementById('historico-servicos'); hist.innerHTML = '<h3 style="margin-bottom: 20px; color:var(--primary);">Histórico</h3>'; cliente.servicos.slice().reverse().forEach((s, idx) => { hist.innerHTML += `<div class="history-card" onclick="abrirDetalhesServico(${cliente.id}, ${cliente.servicos.length - 1 - idx})"><strong style="color:var(--text-main);">${s.data} - ${s.nome}</strong><br><strong style="color:var(--success);">${s.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></div>`; }); }
+        
+        function abrirDetalhesServico(clienteId, servicoIndex) { 
+            let c = db.clientes.find(x => x.id === clienteId);
+            if (!c) return;
+            let s = c.servicos[servicoIndex]; 
+            let box = document.getElementById('modalContent'); 
+            box.innerHTML = `<h2 style="color: var(--primary); text-shadow: var(--primary-glow);">O.S. DETALHADA</h2><p style="color:var(--text-muted); margin-top:10px;">${s.nome}</p><p style="color:var(--success); font-weight:bold; font-size:22px; margin: 15px 0;">${s.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p><button class="btn btn-secondary" style="width:100%" onclick="fecharModal()">Fechar</button>`; 
+            document.getElementById('customModal').classList.add('show'); 
+        }
+
+        function salvarFornecedor() { let nome = document.getElementById('for-nome').value; if(!nome) return; db.fornecedores.push({ id: Date.now(), nome: nome, item: document.getElementById('for-item').value, qtdComprada: 0 }); atualizarBancoDados(); renderizarFornecedores(); }
+        function renderizarFornecedores() { let lista = document.getElementById('lista-fornecedores'); lista.innerHTML = ''; db.fornecedores.forEach(f => { lista.innerHTML += `<div class="card-item"><strong style="color:var(--text-main);">${f.nome}</strong><button class="btn btn-primary" onclick="registrarCompraFornecedor(${f.id})">+ Compra</button></div>`; }); }
+        function registrarCompraFornecedor(id) { db.fornecedores.find(x => x.id === id).qtdComprada++; atualizarBancoDados(); renderizarFornecedores(); }
+        function salvarMovimentacao() { let val = parseFloat(document.getElementById('fin-valor').value); if(isNaN(val)) return; db.financas.push({ tipo: document.getElementById('fin-tipo').value, desc: document.getElementById('fin-desc').value, valor: val, data: Date.now() }); atualizarBancoDados(); renderizarDash(); }
+        function renderizarDash() { verificarNotificacoesFinanceiras(); let hoje = new Date().setHours(0,0,0,0); let entDia = 0, saiDia = 0; db.financas.forEach(f => { if(f.data >= hoje) { if(f.tipo === 'entrada') entDia += f.valor; else saiDia += f.valor; } }); document.getElementById('dash-dia-ent').innerText = entDia.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); document.getElementById('dash-dia-sai').innerText = saiDia.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); document.getElementById('dash-dia-saldo').innerText = (entDia - saiDia).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); renderizarHistoricoMeses(); }
+        function renderizarHistoricoMeses() { let container = document.getElementById('historico-meses'); container.innerHTML = ''; let historico = {}; db.financas.forEach(f => { let mes = obterMesStr(new Date(f.data)); if(!historico[mes]) historico[mes] = { ent: 0, sai: 0 }; if(f.tipo === 'entrada') historico[mes].ent += f.valor; else historico[mes].sai += f.valor; }); Object.keys(historico).forEach(m => { container.innerHTML += `<div class="card-item"><strong style="color:var(--text-main);">${m}</strong>: <span style="color:var(--success);">${(historico[m].ent - historico[m].sai).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></div>`; }); }
+        function salvarEstoque() { let qtd = parseInt(document.getElementById('est-qtd').value); if(isNaN(qtd)) return; if(!db.estoque) db.estoque = []; db.estoque.push({ id: Date.now(), nome: document.getElementById('est-nome').value, qtd: qtd, valor: parseFloat(document.getElementById('est-valor').value) }); atualizarBancoDados(); renderizarEstoque(); }
+        function renderizarEstoque() { let lista = document.getElementById('lista-estoque'); lista.innerHTML = ''; if(!db.estoque) return; db.estoque.forEach(e => { lista.innerHTML += `<div class="card-item"><strong style="color:var(--text-main);">${e.nome}</strong>: <span style="color:var(--text-muted);">${e.qtd} un.</span> <button class="btn btn-danger" onclick="removerEstoque(${e.id})">Remover</button></div>`; }); }
         function removerEstoque(id) { db.estoque = db.estoque.filter(e => e.id !== id); atualizarBancoDados(); renderizarEstoque(); }
-        function renderizarRelatorios() { let relFin = document.getElementById('relatorio-financeiro'); let relMet = document.getElementById('relatorio-metricas'); if(!relFin || !relMet) return; let entradasOS = 0, entradasDiversas = 0, saidas = 0; db.financas.forEach(f => { if(f.tipo === 'entrada') { if(f.desc.includes('Serviço (O.S):')) entradasOS += f.valor; else entradasDiversas += f.valor; } if(f.tipo === 'saida') saidas += f.valor; }); relFin.innerHTML = `<div><p>Receita Bruta: <strong style="color: var(--success);">${(entradasOS + entradasDiversas).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p><p>Total Despesas: <strong style="color: var(--danger);">${saidas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p><hr><p>Saldo Líquido: <strong style="color: var(--primary);">${(entradasOS + entradasDiversas - saidas).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p></div>`; }
-        function renderizarMarketing() { let lista = document.getElementById('lista-marketing'); if(!lista) return; lista.innerHTML = ''; db.clientes.forEach(c => { let num = c.tel.replace(/\D/g, ''); let msg = encodeURIComponent(`Olá ${c.nome}, aqui é da ${db.config.empresa}...`); lista.innerHTML += `<div class="card-item" style="border-left-color: #25D366;"><strong>${c.nome}</strong><a href="https://wa.me/55${num}?text=${msg}" target="_blank" class="btn btn-success" style="background: #25D366; margin-top: 10px;">📱 Chamar</a></div>`; }); }
+        function renderizarRelatorios() { document.getElementById('relatorio-financeiro').innerHTML = "<span style='color:var(--text-muted);'>Balanço carregado no financeiro.</span>"; }
+        
+        function renderizarMarketing() { 
+            let lista = document.getElementById('lista-marketing'); 
+            if(!lista) return;
+            lista.innerHTML = ''; 
+            db.clientes.forEach(c => { 
+                lista.innerHTML += `
+                    <div class="card-item">
+                        <strong style="color:var(--text-main);">${c.nome}</strong>
+                        <button onclick="confirmarWhatsApp('${c.nome}', '${c.tel}')" class="btn btn-success" style="color:#020617; margin-top: 10px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .018 5.396.015 12.03c0 2.12.553 4.189 1.606 6.06L0 24l6.117-1.605a11.803 11.803 0 005.925 1.586h.005c6.635 0 12.032-5.396 12.035-12.03a11.811 11.811 0 00-3.536-8.51z"/>
+                            </svg>
+                            WhatsApp
+                        </button>
+                    </div>`; 
+            }); 
+        }
+
+        function confirmarWhatsApp(nome, tel) {
+            let box = document.getElementById('modalContent');
+            box.innerHTML = `
+                <h3 style="color: var(--primary); margin-bottom: 20px; text-shadow: var(--primary-glow);">WhatsApp Marketing</h3>
+                <p style="color: var(--text-main); margin-bottom: 25px; font-size: 15px;">Deseja iniciar uma conversa com <br><strong style="color:var(--accent); font-size: 18px;">${nome}</strong>?</p>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-success" style="flex: 1;" onclick="let num = '${tel}'.replace(/\\D/g, ''); window.open('https://wa.me/55' + num, '_blank'); fecharModal();">SIM</button>
+                    <button class="btn btn-danger" style="flex: 1;" onclick="fecharModal()">NÃO</button>
+                </div>
+            `;
+            document.getElementById('customModal').classList.add('show');
+        }
+
         window.onclick = function(event) { if (!event.target.closest('.brand')) { document.getElementById('config-menu').classList.remove('show'); } }
     </script>
 </body>
