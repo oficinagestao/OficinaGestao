@@ -494,18 +494,13 @@
         }
 
         function iniciarLoginGoogle() {
-            // NOVIDADE: Verifica se você não abriu o arquivo via C:/ ou file:///
-            if (window.location.protocol === 'file:') {
-                alert("AVISO DE SEGURANÇA:\n\nO Google bloqueia logins feitos abrindo o arquivo direto no navegador (file:///).\n\nVocê precisa rodar o sistema usando uma extensão como o 'Live Server' (no VS Code) ou hospedar o site na internet.");
-                return;
-            }
-
+            // A TRAVA FOI REMOVIDA DAQUI
+            
             if (!gapiInited || !gisInited) {
                 mostrarToast("Aguarde, conectando servidores Google...", "var(--accent)");
                 return;
             }
 
-            // NOVIDADE: Adicionado botão para cancelar caso trave
             let box = document.getElementById('modalContent');
             box.innerHTML = `
                 <div class="loader loader-google"></div>
