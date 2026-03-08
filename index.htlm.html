@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O.S Oficina - Advanced Management</title>
+    <title>66Garage - Advanced Management</title>
     <script src="https://accounts.google.com/gsi/client" onload="gisLoaded()" async defer></script>
     <script src="https://apis.google.com/js/api.js" onload="gapiLoaded()" async defer></script>
 
@@ -373,14 +373,15 @@
                 client_id: GOOGLE_CLIENT_ID,
                 scope: 'https://www.googleapis.com/auth/drive.appdata',
                 callback: processarRespostaGoogle,
-                // NOVIDADE: Callback de erro para evitar que a tela fique presa
                 error_callback: (err) => {
                     console.error("Erro no Auth do Google:", err);
-                    fecharModal(); // Fecha a tela de carregamento presa
+                    fecharModal();
                     if (err.type === 'popup_closed') {
                         mostrarToast("Acesso cancelado pelo usuário.", "var(--accent)");
+                    } else if (err.type === 'popup_failed_to_open') {
+                        mostrarToast("Pop-up bloqueado! Libere as janelas pop-up no navegador.", "var(--danger)");
                     } else {
-                        mostrarToast("Falha ao comunicar com o Google.", "var(--danger)");
+                        mostrarToast("Erro de comunicação com o Google. Tente em outra aba.", "var(--danger)");
                     }
                 }
             });
@@ -494,27 +495,27 @@
         }
 
         function iniciarLoginGoogle() {
-            // A TRAVA FOI REMOVIDA DAQUI
-            
             if (!gapiInited || !gisInited) {
-                mostrarToast("Aguarde, conectando servidores Google...", "var(--accent)");
+                mostrarToast("Aguarde, os scripts do Google ainda estão carregando...", "var(--accent)");
                 return;
             }
 
             let box = document.getElementById('modalContent');
             box.innerHTML = `
                 <div class="loader loader-google"></div>
-                <h3 style="color: #4285F4; font-size: 18px;">Autenticando com Google...</h3>
-                <p style="color: var(--text-muted); font-size: 13px; margin-top:10px;">Verificando credenciais de forma segura.</p>
-                <button class="btn btn-secondary" style="width: 100%; margin-top: 25px;" onclick="fecharModal()">Cancelar e Voltar</button>
+                <h3 style="color: #4285F4; font-size: 18px;">Abrindo tela do Google...</h3>
+                <p style="color: var(--text-muted); font-size: 13px; margin-top:10px;">Se a tela não abrir, verifique se o navegador bloqueou o pop-up.</p>
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 25px;" onclick="fecharModal()">Cancelar</button>
             `;
             document.getElementById('customModal').classList.add('show');
             
             try {
+                // Comando direto que puxa a tela oficial do Google
                 tokenClient.requestAccessToken({prompt: 'select_account'}); 
             } catch (err) {
-                console.error("Falha ao iniciar requisição:", err);
+                console.error("Falha ao puxar a janela:", err);
                 fecharModal();
+                mostrarToast("Falha interna ao chamar o Google.", "var(--danger)");
             }
         }
 
@@ -522,7 +523,7 @@
             if (resp.error !== undefined) {
                 fecharModal();
                 console.error('Erro detalhado:', resp);
-                return mostrarToast('Erro: ' + resp.error, 'var(--danger)');
+                return;
             }
             logadoComGoogle = true;
             document.getElementById('nuvem-status').innerText = "Nuvem (Google Drive)";
