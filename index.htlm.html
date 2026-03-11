@@ -9,9 +9,8 @@
     
     <script src="https://accounts.google.com/gsi/client" onload="gisLoaded()" async defer></script>
     <script src="https://apis.google.com/js/api.js" onload="gapiLoaded()" async defer></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-    <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
     <style>
         /* CSS BASE - DARK MODE PADRÃO (agora tema cinza escuro) */
@@ -257,7 +256,8 @@
         .theme-option:hover { background: var(--card-bg); color: var(--primary); }
     </style>
 </head>
-<body class="tema-cinza-escuro"> <div id="autosave-notification" class="autosave-toast">
+<body class="tema-cinza-escuro"> 
+    <div id="autosave-notification" class="autosave-toast">
         <div class="spinner-mini"></div>
         <span style="color: var(--primary); font-size: 13px; font-weight: 700; letter-spacing: 0.5px;">Salvando dados</span>
     </div>
@@ -302,9 +302,7 @@
                 </svg>
                 Entrar com Conta Google
             </button>
-
-            <div style="margin-top: 15px;" data-netlify-identity-menu></div>
-        </div>
+            </div>
     </div>
 
     <div id="app-screen" class="hidden">
@@ -822,7 +820,8 @@
 
         function iniciarLoginGoogle() {
             if (!gapiInited || !gisInited) {
-                mostrarToast("Aguarde, os scripts do Google ainda estão carregando...", "var(--accent)");
+                // MENSAGEM REFORMULADA AQUI!
+                mostrarToast("Iniciando conexão segura com o Google. Aguarde um instante...", "var(--accent)");
                 return;
             }
             try {
@@ -1704,8 +1703,6 @@
             if (item) {
                 let qtdAntiga = item.qtd;
                 item.qtd = Math.max(0, parseInt(item.qtd) + delta);
-                // Se aumentou, registrar compra; se diminuiu, registrar venda? Vamos tratar apenas ajuste de estoque sem financeiro, a menos que queira. Por simplicidade, só ajusta estoque.
-                // Mas podemos permitir ajuste sem movimento financeiro.
                 atualizarBancoDados();
                 renderizarLoja();
                 if(item.qtd === 0) verificarAlertasEstoque();
@@ -1768,29 +1765,8 @@
             document.getElementById('loja-lucro-estimado').innerText = lucro.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
         }
 
-        function venderAcessorio(id) {
-            let item = db.acessorios.find(a => a.id === id);
-            if(item && item.qtd > 0) {
-                item.qtd--;
-                db.financas.push({ 
-                    tipo: 'entrada', 
-                    categoria: 'boutique',
-                    subtipo: 'venda',
-                    desc: `Venda Boutique: ${item.nome}`, 
-                    valor: item.venda, 
-                    data: Date.now()
-                });
-                atualizarBancoDados();
-                renderizarLoja();
-                mostrarToast(`Vendido: ${item.nome}`, "var(--success)");
-            } else {
-                mostrarToast("Sem estoque!", "var(--danger)");
-            }
-        }
-
         function removerAcessorio(id) { 
             db.acessorios = db.acessorios.filter(a => a.id !== id); 
-            // Não removemos as finanças associadas, pois podem existir vendas anteriores.
             atualizarBancoDados(); 
             renderizarLoja(); 
         }
@@ -1815,9 +1791,6 @@
                 } else if (f.categoria === 'boutique') {
                     if (f.tipo === 'entrada') {
                         bouVendas += f.valor;
-                        // Para quantidade, precisaríamos associar a um item. Vamos contar pelas vendas registradas individualmente.
-                        // Mas não temos o item id na finance. Podemos estimar pela quantidade de registros de venda? Não é preciso.
-                        // Vamos apenas contar o número de registros de venda como aproximação.
                         if (f.subtipo === 'venda') bouQtdVendida++;
                     } else {
                         bouCompras += f.valor;
